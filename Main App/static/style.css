@@ -1,0 +1,200 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap');
+
+/* ── ROOT ── */
+:root {
+  --bg: #0A0D14;
+  --surface: rgba(14, 20, 34, 0.85);
+  --border: rgba(255,255,255,0.08);
+  --cyan: #00E5FF;
+  --green: #00E676;
+  --amber: #FF9100;
+  --red: #FF385C;
+  --text: #F3F4F6;
+  --muted: #94A3B8;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+}
+
+/* ── BASE APP ── */
+.stApp {
+  background-color: var(--bg) !important;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,229,255,0.07), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 100% 60%, rgba(100,58,220,0.05), transparent 70%) !important;
+  color: var(--text) !important;
+  font-family: 'Plus Jakarta Sans', 'AdobeClean', sans-serif !important;
+}
+
+[data-testid="stSidebar"] {
+  background-color: #0C1120 !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+.block-container {
+  padding: 1.5rem 2rem 3rem !important;
+  max-width: 1400px !important;
+}
+
+/* ── TYPOGRAPHY ── */
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  letter-spacing: -0.02em !important;
+  color: #FFFFFF !important;
+}
+
+/* ── BUTTONS ── */
+button,
+.stButton > button,
+[data-testid="stBaseButton-secondary"] {
+  background: rgba(22, 32, 52, 0.85) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-md) !important;
+  color: #FFFFFF !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.22s ease !important;
+}
+
+button:hover,
+.stButton > button:hover {
+  border-color: rgba(0,229,255,0.45) !important;
+  color: var(--cyan) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(0,229,255,0.15) !important;
+}
+
+[data-testid="stBaseButton-primary"],
+button[kind="primary"],
+.stFormSubmitButton > button {
+  background: linear-gradient(135deg, #00E5FF, #0077FF) !important;
+  color: #030710 !important;
+  border: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 18px rgba(0,229,255,0.35) !important;
+  border-radius: var(--r-md) !important;
+}
+
+[data-testid="stBaseButton-primary"]:hover,
+button[kind="primary"]:hover,
+.stFormSubmitButton > button:hover {
+  background: linear-gradient(135deg, #33EBFF, #2697FF) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 26px rgba(0,229,255,0.5) !important;
+  color: #010508 !important;
+}
+
+/* ── INPUTS ── */
+input,
+textarea,
+[data-baseweb="input"],
+[data-baseweb="select"] > div,
+[data-testid="stSelectbox"] > div > div {
+  background-color: rgba(12, 18, 30, 0.9) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-sm) !important;
+  color: #FFFFFF !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+input:focus,
+[data-baseweb="input"]:focus-within {
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 0 2px rgba(0,229,255,0.2) !important;
+}
+
+[data-baseweb="popover"],
+[data-baseweb="menu"],
+div[role="menu"] {
+  background: #0F1524 !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6) !important;
+}
+
+div[role="option"]:hover,
+div[role="option"][aria-selected="true"] {
+  background: rgba(0,229,255,0.1) !important;
+  color: var(--cyan) !important;
+}
+
+/* ── FORM ── */
+.stForm {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-lg) !important;
+  padding: 1.8rem !important;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.3) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+/* ── METRICS ── */
+[data-testid="stMetric"] {
+  background: linear-gradient(145deg, rgba(20,28,44,0.85), rgba(13,18,30,0.95)) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-md) !important;
+  padding: 1rem 1.2rem !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25) !important;
+  transition: all 0.22s ease !important;
+}
+
+[data-testid="stMetric"]:hover {
+  border-color: rgba(0,229,255,0.3) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-testid="stMetricLabel"] p {
+  color: var(--muted) !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+[data-testid="stMetricValue"] {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+}
+
+/* ── TABLES ── */
+table { background: var(--surface) !important; color: var(--text) !important; width: 100% !important; }
+thead tr th {
+  background: rgba(20,28,45,0.95) !important;
+  color: var(--cyan) !important;
+  font-size: 0.82rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 11px 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+tbody tr td { padding: 11px 16px !important; border-bottom: 1px solid rgba(255,255,255,0.04) !important; }
+tbody tr:hover { background: rgba(0,229,255,0.04) !important; }
+
+.stTable, .stDataFrame {
+  border-radius: var(--r-md) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* ── ALERTS ── */
+[data-testid="stAlert"] {
+  border-radius: var(--r-md) !important;
+  background: rgba(16,22,38,0.85) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,229,255,0.4); }
+
+/* ── DIVIDER ── */
+hr { border-color: var(--border) !important; }
+
+/* Sidebar divider */
+[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.06) !important; }

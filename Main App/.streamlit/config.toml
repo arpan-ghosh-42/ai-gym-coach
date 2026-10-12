@@ -1,0 +1,3 @@
+[client]
+# Hides developer options such as the "Deploy" button from end users.
+toolbarMode = "minimal"

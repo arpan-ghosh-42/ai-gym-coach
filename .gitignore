@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database
+Main App/data.db
+
+# Logs
+*.log
+# Extracted-PDF cache for the RAG knowledge base
+Main App/knowledge_base/.cache/
+
+
+# Hide API keys and secrets
+Main App/.env
+Main App/.env.*
+
+# Hide local database
+Main App/data.db
+
+# Hide Python virtual environments
+.venv/
+Main App/.venv/
+Main App/venv/
+
+# Hide Python cache
+__pycache__/
+*.py[cod]

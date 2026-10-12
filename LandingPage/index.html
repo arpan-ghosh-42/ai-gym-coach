@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoachX — AI Workout Planner & Live Form Coach</title>
+  <meta name="description" content="CoachX builds a personalised gym or home workout split for your goal, then coaches your form in real time through your camera." />
+  
+  <link rel="stylesheet" href="style.css?v=3.1" />
+  
+  <!-- Preconnect Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Sci-Fi HUD Scanline Overlay -->
+  <div class="hud-scanline" aria-hidden="true"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <a href="#hero" class="brand-wrapper">
+      <div class="brand-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 5v14M18 5v14M2 9h4M18 9h4M2 15h4M18 15h4M6 12h12" />
+        </svg>
+      </div>
+      <div class="brand-title">
+        COACH<span style="color: var(--cyan)">.X</span>
+        <span class="brand-badge">AI COACH</span>
+      </div>
+    </a>
+
+    <ul class="nav-menu">
+      <li><a href="#how" class="nav-link">How it works</a></li>
+      <li><a href="#planner" class="nav-link">AI Planner</a></li>
+      <li><a href="#simulator" class="nav-link">Pose Coach</a></li>
+      <li><a href="#protocols" class="nav-link">Exercises</a></li>
+    </ul>
+
+    <div class="nav-controls">
+      <button class="sound-toggle-btn active" id="sound-toggle" title="Toggle UI Audio Synthesis">
+        🔊 SFX: ON
+      </button>
+      <a href="http://localhost:8501" target="_blank" rel="noopener noreferrer" class="btn-launch-nav">
+        <span>LAUNCH APP</span>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero" id="hero">
+    <!-- Interactive Background Canvas -->
+    <canvas id="hero-canvas" class="hero-bg-canvas"></canvas>
+
+    <div class="hero-content">
+      <h1 class="hero-title">
+        YOUR PLAN.<br />
+        <span class="glow-cyan">YOUR FORM.</span><br />
+        <span class="glow-gradient">AI-COACHED.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Tell CoachX your body, goal and schedule — it builds a research-backed workout split for the gym or your living room.
+        Then train in front of your camera while it counts every rep and corrects your form in real time.
+      </p>
+
+      <div class="hero-actions">
+        <a href="http://localhost:8501" target="_blank" rel="noopener noreferrer" class="btn-primary-glow">
+          <span>🔥 LAUNCH THE APP — IT'S FREE</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Telemetry Strip -->
+      <div class="hero-telemetry-strip">
+        <div class="telemetry-item">
+          <div class="telemetry-val">3–6<span class="unit">days</span></div>
+          <div class="telemetry-label">Splits Per Week</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-val">2<span class="unit">modes</span></div>
+          <div class="telemetry-label">Gym &amp; Home</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-val">33<span class="unit">pts</span></div>
+          <div class="telemetry-label">Pose Landmarks</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-val">50+<span class="unit">moves</span></div>
+          <div class="telemetry-label">Live Form Checks</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="section-header">
+      <span class="section-tag">HOW IT WORKS</span>
+      <h2 class="section-title">From sign-up to <em>first rep</em> in 2 minutes</h2>
+      <p class="section-desc">No spreadsheets, no guesswork. Answer a few questions and get a plan you can start today.</p>
+    </div>
+    <div class="protocols-grid">
+      <div class="protocol-card">
+        <div class="protocol-icon-header"><span class="proto-icon">📝</span><span class="proto-id-pill">STEP 01</span></div>
+        <h3 class="proto-name">Tell us about you</h3>
+        <ul class="proto-checkpoints">
+          <li>Height, weight, age and gender</li>
+          <li>Gym or home — and the equipment you own</li>
+          <li>Goal: bulk, cut or maintain</li>
+          <li>How many days you can train (3–6)</li>
+        </ul>
+      </div>
+      <div class="protocol-card protocol-card-featured">
+        <div class="protocol-icon-header"><span class="proto-icon">🧠</span><span class="proto-id-pill">STEP 02</span></div>
+        <h3 class="proto-name">Get your AI split</h3>
+        <ul class="proto-checkpoints">
+          <li>A weekly schedule with sets, reps and rest</li>
+          <li>Daily calorie and protein targets</li>
+          <li>Progression, warm-up and cardio guidance</li>
+          <li>Change your details anytime — the plan rebuilds</li>
+        </ul>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon-header"><span class="proto-icon">🎥</span><span class="proto-id-pill">STEP 03</span></div>
+        <h3 class="proto-name">Train with the Pose Coach</h3>
+        <ul class="proto-checkpoints">
+          <li>Point your camera and start your set</li>
+          <li>Automatic rep and set counting</li>
+          <li>Live joint-angle feedback on screen</li>
+          <li>Spoken cues when your form slips</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI PLANNER -->
+  <section id="planner" class="planner-section">
+    <div class="section-header">
+      <span class="section-tag">AI WORKOUT PLANNER</span>
+      <h2 class="section-title">A split built on <em>evidence</em>, not bro-science</h2>
+      <p class="section-desc">
+        CoachX uses retrieval-augmented generation: before writing your plan, it searches a curated library of
+        exercise-science guidance on training volume, frequency, rep ranges and nutrition, then tailors it to you.
+      </p>
+    </div>
+    <div class="planner-grid">
+      <div class="planner-preview">
+        <div class="planner-preview-head">
+          <span>SAMPLE · 4-DAY HOME CUT</span>
+          <span class="planner-badge">AI GENERATED</span>
+        </div>
+        <ul class="week-list">
+          <li><b>MON</b><span>Upper A — Push-ups, Shoulder Press, Dumbbell Row, Curls</span></li>
+          <li><b>TUE</b><span>Lower A — Squats, Lunges, Romanian Deadlift, Plank</span></li>
+          <li class="rest"><b>WED</b><span>Rest &amp; recovery walk</span></li>
+          <li><b>THU</b><span>Upper B — Floor Press, Row, Lateral Raise, Triceps</span></li>
+          <li><b>FRI</b><span>Lower B — Glute Bridge, Split Squat, Single-Leg RDL</span></li>
+          <li class="rest"><b>SAT</b><span>Rest</span></li>
+          <li class="rest"><b>SUN</b><span>Rest</span></li>
+        </ul>
+        <div class="planner-macros">
+          <div><strong>1,850</strong><span>kcal / day</span></div>
+          <div><strong>136 g</strong><span>protein</span></div>
+          <div><strong>-0.3 to -0.6</strong><span>kg / week</span></div>
+        </div>
+      </div>
+      <div class="planner-features">
+        <div class="planner-feature"><span>🏋️</span><div><h4>Gym or home</h4><p>Home plans only use bodyweight and the equipment you actually own — dumbbells, bands or a pull-up bar.</p></div></div>
+        <div class="planner-feature"><span>🎯</span><div><h4>Goal-specific</h4><p>Bulking, cutting and maintenance each change your volume, rep ranges, rest periods and calorie targets.</p></div></div>
+        <div class="planner-feature"><span>🩹</span><div><h4>Works around injuries</h4><p>Mention a sore back or shoulder and the planner swaps in safer alternatives.</p></div></div>
+        <div class="planner-feature"><span>🔗</span><div><h4>Connected to the Pose Coach</h4><p>Every trackable exercise in your plan has a Live Track button — one click starts a form-checked set.</p></div></div>
+        <div class="planner-feature"><span>💬</span><div><h4>Chat with your coach</h4><p>Ask about form, food, soreness or motivation — and have the coach rebuild your plan when your life changes.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE BIOMETRIC FORM SIMULATOR -->
+  <section class="simulator-section" id="simulator">
+    <div class="section-header">
+      <span class="section-tag">POSE COACH · INTERACTIVE DEMO</span>
+      <h2 class="section-title">See The <em>Pose Coach</em> In Action</h2>
+      <p class="section-desc">
+        This demo shows how CoachX measures joint angles and flags form faults as you move.
+        Drag the rep scrubber or simulate a fault — the real app does this live from your camera.
+      </p>
+    </div>
+
+    <div class="simulator-container">
+      <!-- Tabs Header -->
+      <div class="sim-tabs-header">
+        <div class="sim-tabs-title">
+          <span>SELECT PROTOCOL:</span>
+        </div>
+        <div class="sim-exercise-selector">
+          <button class="sim-tab-btn active" data-exercise="squats">🦵 Squats</button>
+          <button class="sim-tab-btn" data-exercise="pushups">💪 Push-ups</button>
+          <button class="sim-tab-btn" data-exercise="curls">🏋️ Biceps Curls</button>
+          <button class="sim-tab-btn" data-exercise="shoulder_press">🔝 Shoulder Press</button>
+          <button class="sim-tab-btn" data-exercise="lunges">🏃 Lunges</button>
+        </div>
+      </div>
+
+      <!-- Split Simulator Screen -->
+      <div class="sim-grid">
+        <!-- Viewport Canvas -->
+        <div class="sim-viewport-col">
+          <canvas id="sim-canvas" class="sim-canvas"></canvas>
+
+          <!-- Top HUD -->
+          <div class="viewport-top-hud">
+            <div class="hud-rec-badge">
+              <span class="rec-blinker"></span>
+              <span>LIVE TRACKING · MEDIAPIPE 3D</span>
+            </div>
+            <div class="hud-coords">
+              POSE CONFIDENCE: 98.4%
+            </div>
+          </div>
+
+          <!-- Bottom Viewport Controls -->
+          <div class="viewport-controls-hud">
+            <div class="controls-row">
+              <button class="btn-sim-play" id="sim-play-btn">⏸ PAUSE</button>
+              <div class="scrub-container">
+                <span class="scrub-label">SCRUB REP:</span>
+                <input type="range" class="scrub-slider" id="sim-scrub-slider" min="0" max="1" step="0.01" value="0" />
+              </div>
+            </div>
+            <div class="fault-switch-row">
+              <span class="fault-label">FAULT INJECTION TEST:</span>
+              <button class="fault-toggle-btn" id="sim-fault-btn">⚪ SIMULATE FORM FAULT</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry HUD -->
+        <div class="sim-hud-col">
+          <!-- Rep Counter Card -->
+          <div class="hud-rep-card">
+            <div class="rep-metrics-left">
+              <span class="rep-tag">REPETITIONS COUNTED</span>
+              <div class="rep-counter-big" id="sim-rep-count">3</div>
+              <div class="rep-sub">Target Set: <strong>10 Reps</strong></div>
+            </div>
+            <div class="rep-ring-wrap">
+              <svg class="rep-svg-ring" width="80" height="80">
+                <circle class="rep-ring-bg" cx="40" cy="40" r="36"></circle>
+                <circle class="rep-ring-progress" id="sim-ring-progress" cx="40" cy="40" r="36"></circle>
+              </svg>
+              <span class="ring-pct-text" id="sim-ring-pct">30%</span>
+            </div>
+          </div>
+
+          <!-- Live Joint Angles -->
+          <div class="hud-angles-grid">
+            <div class="hud-angle-card active-target">
+              <span class="angle-card-label" id="sim-label-primary">KNEE FLEXION</span>
+              <div class="angle-card-val"><span id="sim-angle-primary">82</span><span>°</span></div>
+              <div class="angle-status-badge badge-optimal" id="sim-badge-primary">● OPTIMAL RANGE</div>
+            </div>
+            <div class="hud-angle-card">
+              <span class="angle-card-label" id="sim-label-secondary">BACK POSTURE</span>
+              <div class="angle-card-val"><span id="sim-angle-secondary">168</span><span>°</span></div>
+              <div class="angle-status-badge badge-optimal" id="sim-badge-secondary">● STABLE</div>
+            </div>
+          </div>
+
+          <!-- Live Form Guidance Card -->
+          <div class="hud-guidance-card">
+            <div class="guidance-header">
+              <span class="guidance-badge">BIOMECHANICAL TARGET</span>
+              <span class="guidance-active-name" id="sim-guidance-name">SQUATS</span>
+            </div>
+            <div class="guidance-desc" id="sim-guidance-desc">
+              Knee flexion angle must break parallel (&lt;90°) while keeping the torso inclination aligned and heels grounded.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 BIOMECHANICAL PROTOCOLS -->
+  <section class="protocols-section" id="protocols">
+    <div class="section-header">
+      <span class="section-tag">PROTOCOL SUITE</span>
+      <h2 class="section-title">50+ Live-Tracked <em>Exercises</em></h2>
+      <p class="section-desc">
+        From bench press to Bulgarian split squats, planks to pull-ups — each movement has its own joint-angle
+        checkpoints, partial-rep detection and tempo checks. Here are five of the classics.
+      </p>
+    </div>
+
+    <div class="protocols-grid">
+      <!-- 01 Squats -->
+      <div class="protocol-card protocol-card-featured">
+        <div class="protocol-icon-header">
+          <span class="proto-icon">🦵</span>
+          <span class="proto-id-pill">PROTOCOL 01</span>
+        </div>
+        <h3 class="proto-name">Squats</h3>
+        <div class="proto-muscles">Target: Quadriceps & Gluteus Maximus</div>
+        <ul class="proto-checkpoints">
+          <li>Knee Flexion Angle (&lt;90° for full depth)</li>
+          <li>Torso Inclination & Back Upright Angle</li>
+          <li>Femur-Parallel Crease Detection</li>
+          <li>Anti-Valgus Knee Cave Protection</li>
+        </ul>
+        <div class="proto-angle-spec">
+          <span>TARGET DEPTH:</span>
+          <strong>80° – 90°</strong>
+        </div>
+      </div>
+
+      <!-- 02 Push-ups -->
+      <div class="protocol-card">
+        <div class="protocol-icon-header">
+          <span class="proto-icon">💪</span>
+          <span class="proto-id-pill">PROTOCOL 02</span>
+        </div>
+        <h3 class="proto-name">Push-ups</h3>
+        <div class="proto-muscles">Target: Pectoralis Major & Core</div>
+        <ul class="proto-checkpoints">
+          <li>Elbow Flexion Angle (~90° bottom turn)</li>
+          <li>Full Ear-to-Ankle Spine Alignment</li>
+          <li>Real-time Hip Sag / Arch Detection</li>
+          <li>Top Lockout Extension Check</li>
+        </ul>
+        <div class="proto-angle-spec">
+          <span>TARGET INFLECTION:</span>
+          <strong>85° – 90°</strong>
+        </div>
+      </div>
+
+      <!-- 03 Biceps Curls -->
+      <div class="protocol-card">
+        <div class="protocol-icon-header">
+          <span class="proto-icon">🏋️</span>
+          <span class="proto-id-pill">PROTOCOL 03</span>
+        </div>
+        <h3 class="proto-name">Dumbbell Curls</h3>
+        <div class="proto-muscles">Target: Biceps Brachii & Forearms</div>
+        <ul class="proto-checkpoints">
+          <li>Full Peak Flexion (&lt;45°)</li>
+          <li>Elbow Pinned To Ribcage Guard</li>
+          <li>Anti-Torso Momentum Swing Monitor</li>
+          <li>Eccentric Extension Lowering Rate</li>
+        </ul>
+        <div class="proto-angle-spec">
+          <span>PEAK CONTRACTION:</span>
+          <strong>35° – 45°</strong>
+        </div>
+      </div>
+
+      <!-- 04 Shoulder Press -->
+      <div class="protocol-card">
+        <div class="protocol-icon-header">
+          <span class="proto-icon">🔝</span>
+          <span class="proto-id-pill">PROTOCOL 04</span>
+        </div>
+        <h3 class="proto-name">Shoulder Press</h3>
+        <div class="proto-muscles">Target: Anterior Deltoids & Triceps</div>
+        <ul class="proto-checkpoints">
+          <li>Vertical 180° Overhead Lockout</li>
+          <li>Elbow Descent to 90° Ear Level</li>
+          <li>Lumbar Hyperextension Shield</li>
+          <li>Forearm Plumb-Line Stability</li>
+        </ul>
+        <div class="proto-angle-spec">
+          <span>OVERHEAD LOCKOUT:</span>
+          <strong>170° – 180°</strong>
+        </div>
+      </div>
+
+      <!-- 05 Lunges -->
+      <div class="protocol-card">
+        <div class="protocol-icon-header">
+          <span class="proto-icon">🏃</span>
+          <span class="proto-id-pill">PROTOCOL 05</span>
+        </div>
+        <h3 class="proto-name">Walking Lunges</h3>
+        <div class="proto-muscles">Target: Glutes, Quads & Stabilizers</div>
+        <ul class="proto-checkpoints">
+          <li>Lead Knee 90° Square Angle Stride</li>
+          <li>Vertical Torso Posture Balance</li>
+          <li>Trailing Knee Floor Proximity</li>
+          <li>Pelvic Tilt & Anti-Sway Tracking</li>
+        </ul>
+        <div class="proto-angle-spec">
+          <span>LEAD KNEE BEND:</span>
+          <strong>88° – 92°</strong>
+        </div>
+      </div>
+
+      <!-- Live Streamlit App Card -->
+      <div class="protocol-card" style="background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(176, 38, 255, 0.08)); border-color: var(--border-glow); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="protocol-icon-header">
+            <span class="proto-icon">🚀</span>
+            <span class="proto-id-pill" style="background: var(--green-dim); color: var(--electric-green); border-color: rgba(0, 255, 136, 0.3);">READY TO TRAIN</span>
+          </div>
+          <h3 class="proto-name">Ready To Start?</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.6;">
+            Get your personalised workout plan in under two minutes, then check your form live with the Pose Coach.
+          </p>
+        </div>
+        <a href="http://localhost:8501" target="_blank" rel="noopener noreferrer" class="btn-primary-glow" style="width: 100%; justify-content: center;">
+          <span>BUILD MY PLAN →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELEMETRY & ANALYTICS PREVIEW -->
+  <section class="telemetry-section" id="telemetry">
+    <div class="section-header">
+      <span class="section-tag">PROGRESS TRACKING</span>
+      <h2 class="section-title">Every Rep, <em>Remembered</em></h2>
+      <p class="section-desc">
+        Reps, sets and active time from every Pose Coach session are saved to your profile so you can see your consistency grow.
+      </p>
+    </div>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 2.5rem; backdrop-filter: blur(14px);">
+      <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1rem;">EXAMPLE ATHLETE DASHBOARD</div>
+      <div class="stats-grid">
+        <div style="background: rgba(5, 8, 16, 0.7); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Total Sessions</div>
+          <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-main);">48</div>
+        </div>
+        <div style="background: rgba(5, 8, 16, 0.7); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Lifetime Reps</div>
+          <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--cyan);">1,420</div>
+        </div>
+        <div style="background: rgba(5, 8, 16, 0.7); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Sets Logged</div>
+          <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--electric-green);">142</div>
+        </div>
+        <div style="background: rgba(5, 8, 16, 0.7); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Active Time</div>
+          <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--purple-accent);">18.4 hrs</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem;">
+        <div>STORAGE: <strong style="color: var(--text-main);">Your profile, plan &amp; history</strong></div>
+        <div>PRIVACY: <strong style="color: var(--cyan);">Camera frames are analysed live, never recorded</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        COACH<span style="color: var(--cyan)">.X</span> · AI WORKOUT PLANNER &amp; FORM COACH
+      </div>
+      <div class="footer-status-pill">
+        <span class="pulse-dot"></span>
+        <span>GYM · HOME · ANYWHERE</span>
+      </div>
+    </div>
+    <div class="footer-copy">
+      © 2026 CoachX. General fitness guidance only — not medical advice. Consult a professional before starting a new program if you have health concerns.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js?v=3.0"></script>
+</body>
+</html>
