@@ -5,7 +5,7 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    healthCheckPath: /_stcore/health
+    healthCheckPath: /app/_stcore/health
     autoDeploy: true
     envVars:
       - key: GROQ_API_KEY
