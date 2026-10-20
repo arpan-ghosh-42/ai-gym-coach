@@ -299,6 +299,10 @@ def browser_pose_camera(exercise: str, engine_id: str, key: str = "pose-camera")
         on_frames_change=lambda: None,
     )
     payload = result.frames if result is not None else None
-    if isinstance(payload, dict):
-        return _process(state, payload)
-    return None
+    # TEMP debug for Render: one line per run.
+    import time as _t
+    t0 = _t.perf_counter()
+    out = _process(state, payload) if isinstance(payload, dict) else None
+    print(f"[pose-debug] payload={type(payload).__name__} frames={len(payload.get('frames') or []) if isinstance(payload, dict) else 0} "
+          f"last_seq={state['last_seq']} took={_t.perf_counter() - t0:.3f}s", flush=True)
+    return out
