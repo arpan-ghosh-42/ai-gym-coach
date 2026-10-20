@@ -33,6 +33,7 @@ const TASKS_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@__TASKS_
 const SEND_INTERVAL_MS = 400;   // how often landmark batches go to Python
 const MIN_FRAME_GAP_MS = 33;    // cap detection at ~30 fps
 const MAX_BUFFER = 150;         // unacknowledged frames kept for resending
+const MAX_SEND = 60;            // newest ~2 s per message; the ack arrives late, so cap the resend overlap
 const VIS = 0.7;                // same drawing threshold as the old server-side overlay
 
 // One engine per component key, kept across Streamlit reruns so the camera never restarts.
@@ -56,7 +57,7 @@ function createEngine() {
 
   const eng = {
     root, data: {}, setTrigger: null, stopTimer: null, stopped: false,
-    stream: null, landmarker: null, seq: 0, acked: -1, buffer: [], lastSent: 0, lastDetect: 0,
+    stream: null, landmarker: null, seq: 0, acked: -1, buffer: [], lastSent: 0, lastSentSeq: -1, lastDetect: 0,
     lastLandmarks: null,
   };
 
@@ -126,8 +127,9 @@ function createEngine() {
 
   const send = (now) => {
     if (!eng.setTrigger || now - eng.lastSent < SEND_INTERVAL_MS) return;
-    const frames = eng.buffer.filter((f) => f.s > eng.acked);
-    if (!frames.length) return;
+    const frames = eng.buffer.filter((f) => f.s > eng.acked).slice(-MAX_SEND);
+    if (!frames.length || frames[frames.length - 1].s <= eng.lastSentSeq) return;
+    eng.lastSentSeq = frames[frames.length - 1].s;
     eng.lastSent = now;
     // Every message carries all unacknowledged frames, so a dropped or merged event loses nothing;
     // Python skips frames it has already processed.
@@ -155,7 +157,7 @@ function createEngine() {
       eng.buffer.push({
         s: eng.seq++,
         t: Math.round(now) / 1000,
-        l: lm ? lm.flatMap((p) => [+p.x.toFixed(4), +p.y.toFixed(4), +(p.visibility ?? 0).toFixed(3)]) : null,
+        l: lm ? lm.flatMap((p) => [+p.x.toFixed(3), +p.y.toFixed(3), +(p.visibility ?? 0).toFixed(2)]) : null,
       });
       if (eng.buffer.length > MAX_BUFFER) eng.buffer.splice(0, eng.buffer.length - MAX_BUFFER);
     }
@@ -299,10 +301,6 @@ def browser_pose_camera(exercise: str, engine_id: str, key: str = "pose-camera")
         on_frames_change=lambda: None,
     )
     payload = result.frames if result is not None else None
-    # TEMP debug for Render: one line per run.
-    import time as _t
-    t0 = _t.perf_counter()
-    out = _process(state, payload) if isinstance(payload, dict) else None
-    print(f"[pose-debug] payload={type(payload).__name__} frames={len(payload.get('frames') or []) if isinstance(payload, dict) else 0} "
-          f"last_seq={state['last_seq']} took={_t.perf_counter() - t0:.3f}s", flush=True)
-    return out
+    if isinstance(payload, dict):
+        return _process(state, payload)
+    return None
