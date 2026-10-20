@@ -309,8 +309,9 @@ class GenericDetector(BaseExercise):
     def _set_cue(self, text, now, seconds=2.5):
         self._cue, self._cue_until = text, now + seconds
 
-    def process(self, landmarks) -> dict:
-        spec, now = self.spec, time.monotonic()
+    def process(self, landmarks, now: float | None = None) -> dict:
+        # `now` lets batched browser frames use their capture time instead of the arrival time.
+        spec, now = self.spec, (time.monotonic() if now is None else now)
         p = Pose(landmarks, self.aspect)
         sides = self._sides(p)
         base = {"mode": spec.mode, "metric_label": spec.metric_label, "unit": spec.unit,

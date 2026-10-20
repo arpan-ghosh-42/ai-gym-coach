@@ -1,9 +1,7 @@
-import os
 import time
 
 import pandas as pd
 import streamlit as st
-from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
 from services.coaching.llm import LLMCoach
 from services.coaching.tts import TextToSpeech
@@ -12,24 +10,10 @@ from services.coaching.voice_pipeline import VoicePipeline, autoplay_audio
 from services.persistence.exercise_repository import get_users_exercises
 from services.state.session_defaults import initial_session_defaults
 from services.tracking.metrics import sync_metrics_update
-from services.ui.style_loader import inject_webrtc_styles
+from services.vision.browser_pose import browser_pose_camera
 from views.common import get_groq_client, pal
 
 EXERCISE_NAMES = list(EXERCISES)
-
-
-def _rtc_configuration() -> dict:
-    """STUN always; plus a TURN relay when TURN_URLS is set (comma-separated, e.g.
-    "turn:host:80,turns:host:443?transport=tcp"). Needed on hosts like Render that can't receive inbound UDP."""
-    ice_servers = [{"urls": ["stun:stun.l.google.com:19302"]}]
-    turn_urls = [u.strip() for u in os.environ.get("TURN_URLS", "").split(",") if u.strip()]
-    if turn_urls:
-        ice_servers.append({
-            "urls": turn_urls,
-            "username": os.environ.get("TURN_USERNAME", ""),
-            "credential": os.environ.get("TURN_CREDENTIAL", ""),
-        })
-    return {"iceServers": ice_servers}
 
 
 def _unit_label(exercise):
@@ -93,6 +77,7 @@ def _start_workout(exercise, sets, reps, announce=False):
     st.session_state.last_saved_sets_completed = 0
     st.session_state.last_notified_sets_completed = 0
     st.session_state.last_notified_workout_complete = False
+    st.session_state.camera_session = f"cam-{time.time_ns()}"  # fresh browser camera + detector per workout
     if announce and st.session_state.get("voice_pipeline"):
         result = st.session_state.voice_pipeline.process_event("workout_started", exercise, {})
         if result:
@@ -278,7 +263,29 @@ def _generic_hud(P, ex):
         st.warning(f"🛠️ {m['issue']}")
 
 
+def _coach_feedback(P):
+    if st.session_state.get("audio_to_play"):
+        autoplay_audio(st.session_state.audio_to_play)
+
+    if st.session_state.get("coach_feedback"):
+        st.markdown(f"""
+        <div style="background:{P['card_hero']};
+            border:1px solid {P['accent_border']};border-radius:16px;
+            padding:1.2rem 1.6rem;margin:0.8rem 0;
+            box-shadow:0 8px 28px rgba(0,229,255,0.12);">
+            <div style="font-size:0.75rem;font-weight:700;color:{P['accent']};text-transform:uppercase;
+                letter-spacing:0.1em;margin-bottom:6px;">🤖 COACHX VOICE COACH</div>
+            <div style="font-size:1.1rem;font-weight:600;color:{P['text']};">
+                "{st.session_state.coach_feedback}"
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# A fragment, so the ~2-3 landmark batches per second from the browser only rerun this section.
+@st.fragment
 def _live_session(P):
+    _coach_feedback(P)
     ex = st.session_state.get("exercise_type", "Squats")
     total_reps = st.session_state.get("reps", 0)
     cur_reps = st.session_state.get("current_set_reps", 0)
@@ -303,24 +310,22 @@ def _live_session(P):
         </div>
         """, unsafe_allow_html=True)
 
-        # Imported lazily so MediaPipe only loads when the Pose Coach is actually used.
-        from services.vision.exercise_video_processor import VideoProcessorClass
+        # Pose detection runs in the browser; only landmarks reach the server.
+        engine_id = st.session_state.get("camera_session") or "cam-default"
+        latest = browser_pose_camera(ex, engine_id)
+        sync_metrics_update(latest)
+        cap_col, btn_col = st.columns([3, 1])
+        with cap_col:
+            st.caption("🟢 Live tracking runs on your device — allow camera access when your browser asks.")
+        with btn_col:
+            if st.button("🔄 Restart Camera", key="restart_cam", use_container_width=True):
+                st.session_state.camera_session = f"cam-{time.time_ns()}"
+                st.rerun(scope="fragment")
 
-        context = webrtc_streamer(
-            key="exercise-analysis",
-            mode=WebRtcMode.SENDRECV,
-            video_processor_factory=VideoProcessorClass,
-            rtc_configuration=_rtc_configuration(),
-            media_stream_constraints={"video": True, "audio": False},
-            async_processing=True
-        )
-        sync_metrics_update(context)
-        if context.state.playing:
-            time.sleep(0.25)
-            st.rerun()
-        inject_webrtc_styles()
-        cam_status = "🟢 Camera Active — Tracking Pose" if (context and context.state.playing) else "⚪ Press START above to activate the camera"
-        st.caption(cam_status)
+    # Read after the batch above was processed, so the HUD shows the newest counts.
+    total_reps = st.session_state.get("reps", 0)
+    cur_reps = st.session_state.get("current_set_reps", 0)
+    sets_done = st.session_state.get("sets_completed", 0)
 
     with hud_col:
         prog = min(1.0, cur_reps / rps) if rps > 0 else 0.0
@@ -434,26 +439,10 @@ def render_pose_coach():
 
     _sidebar(P, workout_started)
 
-    if st.session_state.get("audio_to_play"):
-        autoplay_audio(st.session_state.audio_to_play)
-
-    if st.session_state.get("coach_feedback"):
-        st.markdown(f"""
-        <div style="background:{P['card_hero']};
-            border:1px solid {P['accent_border']};border-radius:16px;
-            padding:1.2rem 1.6rem;margin:0.8rem 0;
-            box-shadow:0 8px 28px rgba(0,229,255,0.12);">
-            <div style="font-size:0.75rem;font-weight:700;color:{P['accent']};text-transform:uppercase;
-                letter-spacing:0.1em;margin-bottom:6px;">🤖 COACHX VOICE COACH</div>
-            <div style="font-size:1.1rem;font-weight:600;color:{P['text']};">
-                "{st.session_state.coach_feedback}"
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
     if workout_started:
-        _live_session(P)
+        _live_session(P)  # renders the voice-coach feedback itself, so it updates with each batch
     else:
+        _coach_feedback(P)
         _exercise_picker(P)
 
     _history(P, st.session_state.get("user_id"))
