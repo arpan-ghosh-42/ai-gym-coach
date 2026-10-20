@@ -1,3 +1,4 @@
+import os
 import time
 
 import pandas as pd
@@ -15,6 +16,20 @@ from services.ui.style_loader import inject_webrtc_styles
 from views.common import get_groq_client, pal
 
 EXERCISE_NAMES = list(EXERCISES)
+
+
+def _rtc_configuration() -> dict:
+    """STUN always; plus a TURN relay when TURN_URLS is set (comma-separated, e.g.
+    "turn:host:80,turns:host:443?transport=tcp"). Needed on hosts like Render that can't receive inbound UDP."""
+    ice_servers = [{"urls": ["stun:stun.l.google.com:19302"]}]
+    turn_urls = [u.strip() for u in os.environ.get("TURN_URLS", "").split(",") if u.strip()]
+    if turn_urls:
+        ice_servers.append({
+            "urls": turn_urls,
+            "username": os.environ.get("TURN_USERNAME", ""),
+            "credential": os.environ.get("TURN_CREDENTIAL", ""),
+        })
+    return {"iceServers": ice_servers}
 
 
 def _unit_label(exercise):
@@ -295,7 +310,7 @@ def _live_session(P):
             key="exercise-analysis",
             mode=WebRtcMode.SENDRECV,
             video_processor_factory=VideoProcessorClass,
-            rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+            rtc_configuration=_rtc_configuration(),
             media_stream_constraints={"video": True, "audio": False},
             async_processing=True
         )
