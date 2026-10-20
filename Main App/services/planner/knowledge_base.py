@@ -110,14 +110,22 @@ def _clean_pdf_page(text: str) -> str:
 
 def _pdf_pages(path: Path) -> list[str]:
     """Extracted + cleaned page texts, cached on disk because large PDFs take a while to parse."""
-    stat = path.stat()
-    key = hashlib.sha1(f"{path.name}|{stat.st_mtime}|{stat.st_size}|v2".encode()).hexdigest()[:16]
-    cache_file = CACHE_DIR / f"{path.stem[:40]}-{key}.json"
+    # Keyed on content (size + first/last MiB), not mtime: the Docker image pre-builds this cache and
+    # mtimes don't survive image export exactly, which made every lookup miss on Render.
+    size = path.stat().st_size
+    digest = hashlib.sha1(f"{path.name}|{size}|v3".encode())
+    with path.open("rb") as fh:
+        digest.update(fh.read(1 << 20))
+        if size > 1 << 20:
+            fh.seek(max(size - (1 << 20), 1 << 20))
+            digest.update(fh.read())
+    cache_file = CACHE_DIR / f"{path.stem[:40]}-{digest.hexdigest()[:16]}.json"
     if cache_file.exists():
         try:
             return json.loads(cache_file.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             pass
+    print(f"[knowledge_base] parsing {path.name} (no cache) - this is slow on small CPUs", flush=True)
     try:
         from pypdf import PdfReader
         reader = PdfReader(str(path))
