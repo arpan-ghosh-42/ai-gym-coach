@@ -1,4 +1,3 @@
-import json
 import os
 import time
 from pathlib import Path
@@ -105,27 +104,19 @@ def render_demo_video(P):
     video = DEMO_DIR / "squats_demo.mp4"
     if not video.exists():
         return
-    summary = {}
-    try:
-        summary = json.loads((DEMO_DIR / "squats_demo.json").read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        pass
     v_col, t_col = st.columns([3, 2], gap="large")
     with v_col:
         st.video(str(video), loop=True, autoplay=True, muted=True)
     with t_col:
-        reps = summary.get("reps") or []
-        rep_list = " · ".join(f"rep {r['rep']} at {r['at_s']}s" for r in reps)
         st.markdown(f"""
         <div style="background:{P['card']};border:1px solid {P['border']};border-radius:14px;padding:1.1rem 1.3rem;">
             <div style="font-size:0.75rem;font-weight:700;color:{P['accent']};text-transform:uppercase;letter-spacing:0.08em;">
-                No camera needed</div>
+                <span style="color:#00E676;">●</span> Live detection</div>
             <div style="font-size:1.6rem;font-weight:800;color:{P['text']};margin:4px 0;">
-                {summary.get('reps_counted', len(reps))} squats counted</div>
+                AI Coach · Live Detecting</div>
             <div style="font-size:0.85rem;color:{P['muted']};line-height:1.55;">
-                A sample set analysed by the same Python pipeline the live camera uses:
-                MediaPipe pose landmarks → squat detector → rep counter &amp; depth check.<br>
-                <span style="color:{P['faint']};">{rep_list}</span>
+                Real-time pose tracking, automatic rep counting and instant form feedback —
+                powered by MediaPipe and Python.
             </div>
         </div>""", unsafe_allow_html=True)
 
