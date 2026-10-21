@@ -27,21 +27,22 @@ WEBRTC_CONNECT_TIMEOUT_S = 20
 DEMO_DIR = Path(__file__).resolve().parent.parent / "static" / "demo"
 
 
-def _rtc_configuration() -> dict | None:
-    """ICE servers for WebRTC. Hosts like Render can't receive inbound UDP, so a TURN relay is needed there.
+def _rtc_configurations() -> tuple[dict | None, dict | None]:
+    """(browser, server) ICE config. Hosts like Render can't receive inbound UDP, so a TURN relay is needed there.
 
-    By default (None) streamlit-webrtc picks them itself: Hugging Face's free TURN when HF_TOKEN is set,
-    Twilio's when TWILIO_ACCOUNT_SID/TWILIO_AUTH_TOKEN are set, otherwise Google STUN only.
-    TURN_URLS (comma-separated) + TURN_USERNAME + TURN_CREDENTIAL pin any other TURN provider instead.
+    TURN_URLS (comma-separated, e.g. Metered's "turn:global.relay.metered.ca:80,...:443?transport=tcp")
+    + TURN_USERNAME + TURN_CREDENTIAL set the relay. Without them (None), streamlit-webrtc picks servers itself:
+    Hugging Face's TURN when HF_TOKEN is set, Twilio's with TWILIO_ACCOUNT_SID/TWILIO_AUTH_TOKEN, else STUN only.
     """
     turn_urls = [u.strip() for u in os.environ.get("TURN_URLS", "").split(",") if u.strip()]
     if not turn_urls:
-        return None
-    return {"iceServers": [
-        {"urls": ["stun:stun.l.google.com:19302"]},
-        {"urls": turn_urls, "username": os.environ.get("TURN_USERNAME", ""),
-         "credential": os.environ.get("TURN_CREDENTIAL", "")},
-    ]}
+        return None, None
+    creds = {"username": os.environ.get("TURN_USERNAME", ""), "credential": os.environ.get("TURN_CREDENTIAL", "")}
+    stun = {"urls": ["stun:stun.l.google.com:19302"]}
+    # aiortc (server side) only uses the first TURN URL; TCP works whether or not outbound UDP is allowed.
+    server_urls = sorted(turn_urls, key=lambda u: "transport=tcp" not in u)
+    return ({"iceServers": [stun, {"urls": turn_urls, **creds}]},
+            {"iceServers": [stun, {"urls": server_urls, **creds}]})
 
 
 def _rerun_live_session():
@@ -56,11 +57,13 @@ def _webrtc_camera(ex):
     # Imported lazily so MediaPipe only loads when the WebRTC camera is actually used.
     from services.vision.exercise_video_processor import VideoProcessorClass
 
+    frontend_rtc, server_rtc = _rtc_configurations()
     ctx = webrtc_streamer(
         key="exercise-analysis",
         mode=WebRtcMode.SENDRECV,
         video_processor_factory=VideoProcessorClass,
-        rtc_configuration=_rtc_configuration(),
+        frontend_rtc_configuration=frontend_rtc,
+        server_rtc_configuration=server_rtc,
         # Modest resolution / frame rate: every frame is decoded, analysed and re-encoded on the server.
         media_stream_constraints={"video": {"width": {"ideal": 640}, "height": {"ideal": 480},
                                             "frameRate": {"ideal": 15, "max": 20}}, "audio": False},
