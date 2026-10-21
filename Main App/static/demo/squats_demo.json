@@ -1,0 +1,22 @@
+{
+  "exercise": "Squats",
+  "reps_counted": 3,
+  "reps": [
+    {
+      "rep": 1,
+      "at_s": 0.9
+    },
+    {
+      "rep": 2,
+      "at_s": 6.5
+    },
+    {
+      "rep": 3,
+      "at_s": 12.2
+    }
+  ],
+  "duration_s": 14.5,
+  "frames_analysed": 348,
+  "pipeline": "VideoProcessorClass.recv: MediaPipe PoseLandmarker (full) -> SquatDetector -> overlay",
+  "source": "Mixkit #752 'Woman doing squats' (Mixkit Stock Video Free License)"
+}

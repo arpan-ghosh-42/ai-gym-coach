@@ -94,6 +94,13 @@ def render_login_wall():
             st.session_state["username"] = user["username"]
             st.rerun()
 
+        # Let visitors see the live coach working before they sign up or turn on a camera.
+        from views.common import pal
+        from views.pose_coach import render_demo_video
+        st.markdown("<div style='margin-top:2rem;font-weight:800;font-size:1.15rem;'>🎬 See the AI coach in action</div>",
+                    unsafe_allow_html=True)
+        render_demo_video(pal())
+
         st.markdown(
             """
             <div style="margin-top:2rem;padding:1rem 1.4rem;background:rgba(0,229,255,0.05);
