@@ -5,7 +5,6 @@ import streamlit as st
 
 from services.persistence.profile_repository import get_latest_plan, get_profile, save_plan, save_profile
 from services.planner.generator import generate_plan
-from services.planner.knowledge_base import knowledge_base_stats
 from services.planner.profile import bmi, bmi_category
 from views.common import PAGES, chip, eyebrow, get_groq_client, pal, pose_coach_match, section_title, target_reps
 
@@ -14,11 +13,7 @@ def build_and_save_plan(user_id: int, profile: dict) -> dict:
     """Saves the profile, runs the RAG planner with live progress, and stores the resulting plan."""
     with st.status("Building your personalised plan…", expanded=True) as status:
         save_profile(user_id, profile)
-        stats = knowledge_base_stats()
-        st.write(f"🔎 Searching the training knowledge base ({stats['documents']} documents, {stats['chunks']} passages)…")
         client = get_groq_client()
-        st.write("🧠 Designing your split with the CoachX AI planner…" if client else
-                 "🧮 Building your split with the CoachX rule engine…")
         plan = generate_plan(profile, client)
         save_plan(user_id, plan, profile)
         status.update(label="Your plan is ready!", state="complete", expanded=False)
@@ -216,13 +211,3 @@ def render_workout_plan() -> None:
                 st.markdown(f"- {note}")
             st.caption("CoachX provides general fitness guidance, not medical advice. "
                        "Consult a professional if you have health conditions or injuries.")
-
-    sources = plan.get("retrieved_sources") or []
-    if sources:
-        used = set(plan.get("sources_used") or [])
-        with st.expander(f"📚 Research behind your plan ({len(sources)} passages retrieved)"):
-            for s in sources:
-                mark = "✅ " if s["tag"] in used or f"[{s['tag']}]" in used else ""
-                kind = "📕 Coach guide" if s.get("kind") == "guide" else "📗 Reference"
-                st.markdown(f"**{mark}[{s['tag']}] {s['source']}** — *{s['section']}* · {kind}")
-                st.caption(s["excerpt"] + "…")
