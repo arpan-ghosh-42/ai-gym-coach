@@ -17,6 +17,9 @@ COPY ["Main App/", "./"]
 # on Render's small free-tier CPU (and the on-disk cache is wiped on every deploy).
 RUN python -c "from services.planner.knowledge_base import _kb_files, _pdf_pages; [_pdf_pages(p) for p in _kb_files() if p.suffix.lower() == '.pdf']" \
     && ls -la knowledge_base/.cache
+# Movexa title, favicon and "getting things ready" splash on Streamlit's own loader page.
+RUN python scripts/brand_streamlit.py
+
 COPY LandingPage/ /app/landing/
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 COPY start.sh /start.sh

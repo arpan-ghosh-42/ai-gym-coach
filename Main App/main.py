@@ -94,7 +94,7 @@ def render_sidebar(username: str, profile: dict) -> None:
 
 def main():
     st.set_page_config(
-        page_icon="🏋️",
+        page_icon=os.path.join(os.getcwd(), "static", "brand", "movexa_icon_192.png"),
         page_title="Movexa // AI GYM Coach",
         initial_sidebar_state="expanded",
         layout="wide"
