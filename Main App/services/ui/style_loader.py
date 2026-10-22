@@ -11,7 +11,7 @@ def load_css(file_path):
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
-def render_coachx_logo(size=38, mode="dark", show_sub=True):
+def render_movexa_logo(size=38, mode="dark", show_sub=True):
     text_color = "#FFFFFF" if mode == "dark" else "#0F172A"
     sub_color = "#00E5FF" if mode == "dark" else "#0284C7"
     bg_poly = "#0F1728" if mode == "dark" else "#F1F5F9"
@@ -40,7 +40,7 @@ def render_coachx_logo(size=38, mode="dark", show_sub=True):
         f'{svg}'
         f'<div>'
         f'<div style="font-family:Space Grotesk,sans-serif;font-size:1.35rem;font-weight:800;line-height:1;letter-spacing:-0.03em;color:{text_color};">'
-        f'Coach<span style="background:linear-gradient(135deg,#00E5FF,#FF9100);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">X</span>'
+        f'Move<span style="background:linear-gradient(135deg,#00E5FF,#FF9100);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">xa</span>'
         f'</div>'
         f'{sub_html}'
         f'</div>'

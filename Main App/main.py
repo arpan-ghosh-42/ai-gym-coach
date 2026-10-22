@@ -38,7 +38,7 @@ def render_top_bar(username: str) -> None:
             <div>
                 <span style="font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;
                     {P['title_style']}">
-                    CoachX AI COACH
+                    Movexa AI COACH
                 </span>
                 <span style="font-size:0.7rem;color:#64748B;margin-left:8px;font-weight:600;letter-spacing:0.05em;">
                     PLAN · TRAIN · PERFECT
@@ -83,7 +83,7 @@ def render_sidebar(username: str, profile: dict) -> None:
             st.session_state["theme_mode"] = "light" if theme_mode == "dark" else "dark"
             st.rerun()
 
-        st.link_button("🌐 CoachX Home", LANDING_URL, use_container_width=True)
+        st.link_button("🌐 Movexa Home", LANDING_URL, use_container_width=True)
         if st.button("🚪 Switch Athlete", use_container_width=True):
             for key in ("user_id", "username", "workout_started", "onb", "onb_step", "coach_feedback", "audio_to_play",
                         "chat_proposal", "chat_plan_ready", "live_metrics"):
@@ -95,7 +95,7 @@ def render_sidebar(username: str, profile: dict) -> None:
 def main():
     st.set_page_config(
         page_icon="🏋️",
-        page_title="CoachX // AI GYM Coach",
+        page_title="Movexa // AI GYM Coach",
         initial_sidebar_state="expanded",
         layout="wide"
     )

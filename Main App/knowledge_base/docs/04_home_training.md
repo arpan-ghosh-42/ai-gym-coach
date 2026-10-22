@@ -25,5 +25,5 @@ Add reps; slow the lowering phase to 3-4 seconds; add a 1-2 second pause at the 
 - 4 days: upper/lower. Upper = push-ups, rows, pike push-ups, pull-ups or band rows, dips, curls. Lower = Bulgarian split squats, single-leg RDLs, glute bridges, lunges, calf raises, core.
 - 5-6 days: push/pull/legs or upper/lower/full body, with sets taken close to failure and rep ranges of 10-25.
 
-## Exercises the CoachX Pose Coach can analyse live
+## Exercises the Movexa Pose Coach can analyse live
 Squats, push-ups, dumbbell biceps curls, dumbbell shoulder press and lunges. These are all suitable for home training and should be included where they fit the plan so the user can check form with the camera.

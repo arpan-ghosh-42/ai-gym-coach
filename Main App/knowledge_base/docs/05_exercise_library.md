@@ -36,4 +36,4 @@
 - Plank (30-60 s), side plank (20-45 s per side), dead bug (8-12 per side), hanging knee raise (10-15), cable crunch (12-15), ab wheel rollout (6-12).
 
 ## Pose Coach supported movements
-The CoachX live Pose Coach currently detects and corrects: Squats (knee angle, back angle, depth), Push-ups (elbow angle, body alignment, hip sag), Biceps Curls with dumbbells (elbow flexion, shoulder stability, torso swing), Shoulder Press (lockout, elbow angle, back arch), and Lunges (front knee angle, torso angle, balance).
+The Movexa live Pose Coach currently detects and corrects: Squats (knee angle, back angle, depth), Push-ups (elbow angle, body alignment, hip sag), Biceps Curls with dumbbells (elbow flexion, shoulder stability, torso swing), Shoulder Press (lockout, elbow angle, back arch), and Lunges (front knee angle, torso angle, balance).

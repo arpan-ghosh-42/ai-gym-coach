@@ -384,7 +384,7 @@ def _coach_feedback(P):
             padding:1.2rem 1.6rem;margin:0.8rem 0;
             box-shadow:0 8px 28px rgba(0,229,255,0.12);">
             <div style="font-size:0.75rem;font-weight:700;color:{P['accent']};text-transform:uppercase;
-                letter-spacing:0.1em;margin-bottom:6px;">🤖 COACHX VOICE COACH</div>
+                letter-spacing:0.1em;margin-bottom:6px;">🤖 MOVEXA VOICE COACH</div>
             <div style="font-size:1.1rem;font-weight:600;color:{P['text']};">
                 "{st.session_state.coach_feedback}"
             </div>

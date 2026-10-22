@@ -1,8 +1,8 @@
-# CoachX — AI Workout Planner & Live Pose Coach
+# Movexa — AI Workout Planner & Live Pose Coach
 
-CoachX has two independent parts:
+Movexa has two independent parts:
 
-1. **AI Workout Planner**: new users answer five onboarding questions (body metrics, gym or home, goal, training days, gender). CoachX then generates a weekly split with a RAG pipeline: it retrieves passages from `Main App/knowledge_base/`, sends them to a Groq LLM, and gets back a structured plan. Users can edit their details at any time, and the plan is rebuilt.
+1. **AI Workout Planner**: new users answer five onboarding questions (body metrics, gym or home, goal, training days, gender). Movexa then generates a weekly split with a RAG pipeline: it retrieves passages from `Main App/knowledge_base/`, sends them to a Groq LLM, and gets back a structured plan. Users can edit their details at any time, and the plan is rebuilt.
 2. **Pose Coach**: real-time form correction with MediaPipe and WebRTC for squats, push-ups, dumbbell curls, shoulder press and lunges. It includes rep and set counting and spoken cues.
 
 ## Run

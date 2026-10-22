@@ -9,9 +9,9 @@ from services.planner.profile import DAY_LAYOUTS, WEEKDAYS, nutrition_targets
 
 DEFAULT_MODEL = "openai/gpt-oss-120b"
 
-SYSTEM_PROMPT = f"""You are CoachX Planner, an evidence-based strength & conditioning coach.
+SYSTEM_PROMPT = f"""You are Movexa Planner, an evidence-based strength & conditioning coach.
 You design weekly workout splits grounded in the CONTEXT provided. Context passages come in two kinds:
-- COACH GUIDE: the CoachX head coach's own programs and methods (e.g. full-body foundation weeks for
+- COACH GUIDE: the Movexa head coach's own programs and methods (e.g. full-body foundation weeks for
   beginners before moving to push/pull/legs, exercise choices, sets/reps/rest, home routines).
   These are your PRIMARY source — follow their structure, exercise selection and prescriptions
   whenever they fit the athlete.
@@ -144,7 +144,7 @@ def _validate(raw: dict, profile: dict) -> dict:
         return [str(v) for v in val] if isinstance(val, list) else []
 
     return {
-        "plan_name": str(raw.get("plan_name") or "Your CoachX Program"),
+        "plan_name": str(raw.get("plan_name") or "Your Movexa Program"),
         "split_type": str(raw.get("split_type") or ""),
         "summary": str(raw.get("summary") or ""),
         "training_days": clean_days,

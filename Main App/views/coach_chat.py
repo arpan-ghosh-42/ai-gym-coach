@@ -73,7 +73,7 @@ def render_coach_chat() -> None:
         f'<div style="background:{P["card_hero"]};border:1px solid {P["accent_border"]};border-radius:20px;'
         f'padding:1.5rem 2rem;margin-bottom:1rem;">{eyebrow("Coach chat")}'
         f'<div style="font-family:Space Grotesk,sans-serif;font-size:1.9rem;font-weight:800;color:{P["text"]};">'
-        f'Talk to Coach X 💬</div><div style="color:{P["muted"]};">Training, form, nutrition, recovery or '
+        f'Talk to Movexa Coach 💬</div><div style="color:{P["muted"]};">Training, form, nutrition, recovery or '
         f'motivation — ask anything. Want your plan changed? Just say so and I\'ll rebuild it.</div></div>',
         unsafe_allow_html=True,
     )
@@ -91,13 +91,13 @@ def render_coach_chat() -> None:
     messages = get_chat_messages(user_id)
     if not messages:
         with st.chat_message("assistant", avatar=AVATARS["assistant"]):
-            st.markdown(f"Hey {st.session_state.get('username', 'athlete')}! 👋 I'm Coach X. I know your profile "
+            st.markdown(f"Hey {st.session_state.get('username', 'athlete')}! 👋 I'm Movexa Coach. I know your profile "
                         "and your current plan — what's on your mind today?")
         st.caption("Try one of these:")
         cols = st.columns(2)
         for i, s in enumerate(SUGGESTIONS):
             if cols[i % 2].button(s, key=f"suggest_{i}", use_container_width=True):
-                with st.spinner("Coach X is thinking…"):
+                with st.spinner("Movexa Coach is thinking…"):
                     _send(user_id, s)
                 st.rerun()
 
@@ -114,10 +114,10 @@ def render_coach_chat() -> None:
     if proposal:
         _proposal_card(user_id, proposal)
 
-    if prompt := st.chat_input("Ask Coach X anything about your training…"):
+    if prompt := st.chat_input("Ask Movexa Coach anything about your training…"):
         with st.chat_message("user", avatar=AVATARS["user"]):
             st.markdown(prompt)
         with st.chat_message("assistant", avatar=AVATARS["assistant"]):
-            with st.spinner("Coach X is thinking…"):
+            with st.spinner("Movexa Coach is thinking…"):
                 _send(user_id, prompt)
         st.rerun()

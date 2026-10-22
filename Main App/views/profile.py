@@ -19,7 +19,7 @@ def render_profile() -> None:
         f'padding:1.6rem 2rem;margin-bottom:1.2rem;">{eyebrow("Athlete profile")}'
         f'<div style="font-family:Space Grotesk,sans-serif;font-size:1.9rem;font-weight:800;color:{P["text"]};">'
         f'Edit your details</div><div style="color:{P["muted"]};">Changed your weight, goal or schedule? '
-        f'Update it here and CoachX will rebuild your workout split to match.</div></div>',
+        f'Update it here and Movexa will rebuild your workout split to match.</div></div>',
         unsafe_allow_html=True,
     )
 

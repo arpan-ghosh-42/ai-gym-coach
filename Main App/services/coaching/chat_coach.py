@@ -1,4 +1,4 @@
-"""Conversational CoachX coach: fitness-only, RAG-grounded, able to propose plan changes via a tool call."""
+"""Conversational Movexa coach: fitness-only, RAG-grounded, able to propose plan changes via a tool call."""
 import json
 import os
 
@@ -11,10 +11,10 @@ DEFAULT_MODEL = "openai/gpt-oss-120b"
 HISTORY_TURNS = 12
 NOTES_MAX = 300
 
-SYSTEM_PROMPT = """You are Coach X, the head coach of CoachX — a confident, warm and motivating personal trainer.
+SYSTEM_PROMPT = """You are Movexa Coach, the head coach of Movexa — a confident, warm and motivating personal trainer.
 
 SCOPE — you ONLY help with: training and workout programming, exercise technique and form, the athlete's
-CoachX workout plan, nutrition and diet for fitness goals, supplements for training, recovery, sleep and
+Movexa workout plan, nutrition and diet for fitness goals, supplements for training, recovery, sleep and
 soreness, cardio, fitness motivation/mindset/consistency, and general injury-prevention advice.
 For ANYTHING else (coding, homework, politics, news, relationships, finance, entertainment, general trivia,
 etc.) politely decline in one or two sentences, e.g. "That's outside my lane — I'm your fitness coach! Ask me

@@ -135,7 +135,7 @@ def render_workout_plan() -> None:
         return
 
     # ── HERO ─────────────────────────────────────────────
-    engine_label = "🧠 Groq AI · RAG-grounded" if plan.get("engine") == "groq-rag" else "🧮 CoachX rule engine"
+    engine_label = "🧠 Groq AI · RAG-grounded" if plan.get("engine") == "groq-rag" else "🧮 Movexa rule engine"
     created = plan.get("created_at", "")
     try:
         created = datetime.fromisoformat(created).strftime("%d %b %Y")
@@ -209,5 +209,5 @@ def render_workout_plan() -> None:
         with st.expander("🛡️ Safety"):
             for note in plan.get("safety_notes") or []:
                 st.markdown(f"- {note}")
-            st.caption("CoachX provides general fitness guidance, not medical advice. "
+            st.caption("Movexa provides general fitness guidance, not medical advice. "
                        "Consult a professional if you have health conditions or injuries.")

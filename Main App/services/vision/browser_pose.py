@@ -37,7 +37,7 @@ const MAX_SEND = 60;            // newest ~2 s per message; the ack arrives late
 const VIS = 0.7;                // same drawing threshold as the old server-side overlay
 
 // One engine per component key, kept across Streamlit reruns so the camera never restarts.
-const engines = (window.__coachxPoseEngines = window.__coachxPoseEngines || new Map());
+const engines = (window.__movexaPoseEngines = window.__movexaPoseEngines || new Map());
 
 function createEngine() {
   const root = document.createElement("div");
@@ -223,7 +223,7 @@ export default function (component) {
 }
 """.replace("__TASKS_VERSION__", TASKS_VERSION)
 
-_pose_camera = st.components.v2.component("coachx_pose_camera", js=_JS, css=_CSS)
+_pose_camera = st.components.v2.component("movexa_pose_camera", js=_JS, css=_CSS)
 
 
 def _landmarks(flat):

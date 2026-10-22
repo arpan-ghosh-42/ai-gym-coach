@@ -1,5 +1,5 @@
 /**
- * COACHX // BIOMETRIC AI GYM COACH — INTERACTIVE ENGINE
+ * MOVEXA // BIOMETRIC AI GYM COACH — INTERACTIVE ENGINE
  * Responsive Kinematic Simulator, Real-Time Angles & Web Audio FX
  */
 

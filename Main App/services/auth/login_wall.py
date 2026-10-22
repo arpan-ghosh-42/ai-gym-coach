@@ -1,6 +1,6 @@
 import streamlit as st
 from services.persistence.exercise_repository import get_or_create_user
-from services.ui.style_loader import render_coachx_logo, inject_theme
+from services.ui.style_loader import render_movexa_logo, inject_theme
 
 
 def render_login_wall():
@@ -13,7 +13,7 @@ def render_login_wall():
     # Top bar on login wall with Theme Switcher
     top_col1, top_col2 = st.columns([8, 2])
     with top_col1:
-        st.markdown(render_coachx_logo(size=36, mode=theme_mode, show_sub=False), unsafe_allow_html=True)
+        st.markdown(render_movexa_logo(size=36, mode=theme_mode, show_sub=False), unsafe_allow_html=True)
     with top_col2:
         btn_label = "☀️ Light" if theme_mode == "dark" else "🌙 Dark"
         if st.button(btn_label, key="login_theme_toggle", use_container_width=True):
@@ -41,8 +41,8 @@ def render_login_wall():
 
         st.markdown(
             f"""<div style="text-align:center;margin-top:0.5rem;margin-bottom:2rem;">
-<div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:{tag_bg};border:1px solid {tag_border};border-radius:30px;color:{tag_color};font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.2rem;">⚡ COACHX // YOUR AI PERSONAL TRAINER</div>
-<h1 style="font-size:3rem;font-weight:800;line-height:1.15;margin-bottom:0.8rem;{heading_style}">Train Smarter with CoachX</h1>
+<div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:{tag_bg};border:1px solid {tag_border};border-radius:30px;color:{tag_color};font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.2rem;">⚡ MOVEXA // YOUR AI PERSONAL TRAINER</div>
+<h1 style="font-size:3rem;font-weight:800;line-height:1.15;margin-bottom:0.8rem;{heading_style}">Train Smarter with Movexa</h1>
 <p style="font-size:1.1rem;max-width:660px;margin:0 auto;line-height:1.6;color:{sub_text_color};">A workout split built around your body, goal and schedule — plus a camera-based coach that counts your reps and corrects your form in real time.</p>
 </div>""",
             unsafe_allow_html=True,

@@ -4,7 +4,7 @@ from services.planner.profile import (
     DEFAULT_PROFILE, EXPERIENCE_LEVELS, GENDERS, GOAL_DETAILS, HOME_EQUIPMENT, LOCATION_DETAILS,
     MAX_DAYS, MIN_DAYS, bmi, bmi_category,
 )
-from services.ui.style_loader import render_coachx_logo
+from services.ui.style_loader import render_movexa_logo
 from views.common import eyebrow, option_card, pal
 from views.workout_plan import build_and_save_plan
 
@@ -205,7 +205,7 @@ def render_onboarding() -> None:
     d = _data()
     step = st.session_state.get("onb_step", 0)
 
-    st.markdown(render_coachx_logo(size=36, mode=st.session_state.get("theme_mode", "dark"), show_sub=False),
+    st.markdown(render_movexa_logo(size=36, mode=st.session_state.get("theme_mode", "dark"), show_sub=False),
                 unsafe_allow_html=True)
     _, center, _ = st.columns([1, 6, 1])
     with center:
@@ -213,7 +213,7 @@ def render_onboarding() -> None:
             f'<div style="text-align:center;margin-top:1rem;">{eyebrow("Step " + str(step + 1) + " of " + str(len(STEPS)))}'
             f'<div style="font-family:Space Grotesk,sans-serif;font-size:2.2rem;font-weight:800;{P["title_style"]}">'
             f'Welcome, {st.session_state.get("username", "Athlete")} 👋</div>'
-            f'<div style="color:{P["muted"]};margin-top:4px;">Answer 5 quick questions and CoachX will build a '
+            f'<div style="color:{P["muted"]};margin-top:4px;">Answer 5 quick questions and Movexa will build a '
             f'research-backed workout split just for you.</div></div>',
             unsafe_allow_html=True,
         )
